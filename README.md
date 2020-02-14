@@ -90,7 +90,7 @@ Add it in your root build.gradle at the end of repositories:
     ```
    In Java.
    ```java
-   public class FixtureFactory extends org.andreadelfante.datafixture.test.resolvers.FixtureFactory {
+   public class FixtureFactory extends org.andreadelfante.datafixture.resolvers.FixtureFactory {
        FixtureFactory() {
            super();
    

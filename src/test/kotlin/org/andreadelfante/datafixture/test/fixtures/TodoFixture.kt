@@ -1,10 +1,10 @@
 package org.andreadelfante.datafixture.test.fixtures
 
 import com.github.javafaker.Faker
-import org.andreadelfante.datafixture.kotlin.java.interfaces.Fixture
-import org.andreadelfante.datafixture.test.misc.FixtureAttributes
+import org.andreadelfante.datafixture.interfaces.Fixture
+import org.andreadelfante.datafixture.misc.FixtureAttributes
 import org.andreadelfante.datafixture.test.models.Todo
-import org.andreadelfante.datafixture.test.resolvers.FixtureResolver
+import org.andreadelfante.datafixture.resolvers.FixtureResolver
 
 class TodoFixture : Fixture<Todo> {
     class Attributes(text: String? = null, isChecked: Boolean? = null) : FixtureAttributes() {

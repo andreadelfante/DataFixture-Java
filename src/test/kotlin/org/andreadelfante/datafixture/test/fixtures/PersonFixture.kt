@@ -1,11 +1,11 @@
 package org.andreadelfante.datafixture.test.fixtures
 
 import com.github.javafaker.Faker
-import org.andreadelfante.datafixture.kotlin.java.interfaces.Fixture
-import org.andreadelfante.datafixture.test.misc.FixtureAttributes
+import org.andreadelfante.datafixture.interfaces.Fixture
+import org.andreadelfante.datafixture.misc.FixtureAttributes
 import org.andreadelfante.datafixture.test.models.Dog
 import org.andreadelfante.datafixture.test.models.Person
-import org.andreadelfante.datafixture.test.resolvers.FixtureResolver
+import org.andreadelfante.datafixture.resolvers.FixtureResolver
 
 class PersonFixture : Fixture<Person> {
     override fun fixture(faker: Faker, attributes: FixtureAttributes, resolver: FixtureResolver): Person = Person(

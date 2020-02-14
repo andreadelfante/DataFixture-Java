@@ -1,8 +1,8 @@
-package org.andreadelfante.datafixture.kotlin.java.interfaces
+package org.andreadelfante.datafixture.interfaces
 
 import com.github.javafaker.Faker
-import org.andreadelfante.datafixture.test.misc.FixtureAttributes
-import org.andreadelfante.datafixture.test.resolvers.FixtureResolver
+import org.andreadelfante.datafixture.misc.FixtureAttributes
+import org.andreadelfante.datafixture.resolvers.FixtureResolver
 
 /**
  * This interface defines the rules to create an object.

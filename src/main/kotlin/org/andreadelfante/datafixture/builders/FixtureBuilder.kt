@@ -1,6 +1,6 @@
-package org.andreadelfante.datafixture.kotlin.java.builders
+package org.andreadelfante.datafixture.builders
 
-import org.andreadelfante.datafixture.test.misc.FixtureAttributes
+import org.andreadelfante.datafixture.misc.FixtureAttributes
 
 /**
  * This interface provides functions to create fixtures.

@@ -1,6 +1,6 @@
-package org.andreadelfante.datafixture.test.resolvers
+package org.andreadelfante.datafixture.resolvers
 
-import org.andreadelfante.datafixture.kotlin.java.builders.FixtureBuilder
+import org.andreadelfante.datafixture.builders.FixtureBuilder
 import kotlin.reflect.KClass
 
 /**

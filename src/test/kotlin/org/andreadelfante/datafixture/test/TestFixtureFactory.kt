@@ -6,7 +6,7 @@ import org.andreadelfante.datafixture.test.fixtures.TodoFixture
 import org.andreadelfante.datafixture.test.models.Dog
 import org.andreadelfante.datafixture.test.models.Person
 import org.andreadelfante.datafixture.test.models.Todo
-import org.andreadelfante.datafixture.test.resolvers.FixtureFactory
+import org.andreadelfante.datafixture.resolvers.FixtureFactory
 
 class TestFixtureFactory : FixtureFactory() {
     init {

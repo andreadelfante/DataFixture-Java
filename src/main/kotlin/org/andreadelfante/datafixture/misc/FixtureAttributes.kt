@@ -1,4 +1,4 @@
-package org.andreadelfante.datafixture.test.misc
+package org.andreadelfante.datafixture.misc
 
 /**
  * A container of attributes, used to override default generation of value.

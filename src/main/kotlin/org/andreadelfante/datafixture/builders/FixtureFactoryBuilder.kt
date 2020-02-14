@@ -1,9 +1,9 @@
-package org.andreadelfante.datafixture.kotlin.java.builders
+package org.andreadelfante.datafixture.builders
 
 import com.github.javafaker.Faker
-import org.andreadelfante.datafixture.kotlin.java.interfaces.Fixture
-import org.andreadelfante.datafixture.test.misc.FixtureAttributes
-import org.andreadelfante.datafixture.test.resolvers.FixtureResolver
+import org.andreadelfante.datafixture.interfaces.Fixture
+import org.andreadelfante.datafixture.misc.FixtureAttributes
+import org.andreadelfante.datafixture.resolvers.FixtureResolver
 import java.util.*
 
 internal class FixtureFactoryBuilder<T>(private val fixture: Fixture<T>,

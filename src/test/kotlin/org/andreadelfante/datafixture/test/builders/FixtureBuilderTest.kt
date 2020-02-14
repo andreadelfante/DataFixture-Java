@@ -5,7 +5,7 @@ import org.andreadelfante.datafixture.test.TestFixtureFactory
 import org.andreadelfante.datafixture.test.fixtures.DogFixture
 import org.andreadelfante.datafixture.test.models.Dog
 import org.andreadelfante.datafixture.test.models.Person
-import org.andreadelfante.datafixture.test.resolvers.FixtureFactory
+import org.andreadelfante.datafixture.resolvers.FixtureFactory
 import org.junit.Before
 import org.junit.Test
 

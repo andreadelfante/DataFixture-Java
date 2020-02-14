@@ -1,11 +1,11 @@
-package org.andreadelfante.datafixture.test.resolvers
+package org.andreadelfante.datafixture.resolvers
 
-import org.andreadelfante.datafixture.kotlin.java.builders.FixtureBuilder
-import org.andreadelfante.datafixture.kotlin.java.builders.FixtureFactoryBuilder
-import org.andreadelfante.datafixture.kotlin.java.exceptions.MissingFixtureAssociationException
-import org.andreadelfante.datafixture.kotlin.java.exceptions.MissingFixtureException
-import org.andreadelfante.datafixture.kotlin.java.interfaces.Fixture
-import org.andreadelfante.datafixture.test.resolvers.FixtureResolver.Companion.DEFAULT_NAME
+import org.andreadelfante.datafixture.builders.FixtureBuilder
+import org.andreadelfante.datafixture.builders.FixtureFactoryBuilder
+import org.andreadelfante.datafixture.exceptions.MissingFixtureAssociationException
+import org.andreadelfante.datafixture.exceptions.MissingFixtureException
+import org.andreadelfante.datafixture.interfaces.Fixture
+import org.andreadelfante.datafixture.resolvers.FixtureResolver.Companion.DEFAULT_NAME
 import kotlin.reflect.KClass
 
 /**

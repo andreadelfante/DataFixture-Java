@@ -1,7 +1,8 @@
 package org.andreadelfante.datafixture.test.resolvers
 
-import org.andreadelfante.datafixture.kotlin.java.exceptions.MissingFixtureAssociationException
-import org.andreadelfante.datafixture.kotlin.java.exceptions.MissingFixtureException
+import org.andreadelfante.datafixture.exceptions.MissingFixtureAssociationException
+import org.andreadelfante.datafixture.exceptions.MissingFixtureException
+import org.andreadelfante.datafixture.resolvers.FixtureFactory
 import org.andreadelfante.datafixture.test.fixtures.PersonFixture
 import org.andreadelfante.datafixture.test.models.Person
 import org.junit.Before

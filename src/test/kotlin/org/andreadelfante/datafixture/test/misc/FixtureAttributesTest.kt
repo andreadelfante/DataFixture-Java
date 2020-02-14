@@ -1,5 +1,6 @@
 package org.andreadelfante.datafixture.test.misc
 
+import org.andreadelfante.datafixture.misc.FixtureAttributes
 import org.junit.Before
 import org.junit.Test
 
