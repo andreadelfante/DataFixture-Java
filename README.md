@@ -90,7 +90,7 @@ Add it in your root build.gradle at the end of repositories:
     ```
    In Java.
    ```java
-   public class FixtureFactory extends org.andreadelfante.datafixture.resolvers.FixtureFactory {
+   public class FixtureFactory extends org.andreadelfante.datafixture.test.resolvers.FixtureFactory {
        FixtureFactory() {
            super();
    
@@ -113,7 +113,7 @@ Add it in your root build.gradle at the end of repositories:
        
     factory.get(Todo.class).create()
     factory.get(Todo.class).create(2)
-    factory.get(Todo.class).create().create(TodoFixture.Attributes("Fixed text")) 
+    factory.get(Todo.class).create(TodoFixture.Attributes("Fixed text")) 
    ```
 
 ## Contributing
