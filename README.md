@@ -29,7 +29,7 @@ Add it in your root build.gradle at the end of repositories:
 ## Usage
 1. Create a class to define a fixture. In Kotlin:
     ```kotlin
-   class TodoFixture : Fixture<Todo> {
+   class TodoFixture : JSONFixture<Todo> { // `Fixture` to define only a fixture model. For fixtured JSONObject you must use `JSONFixture`.
    
        // Define here a class Attributes to override fields during generation.
        // If you need to generate fake data you must not use it.
@@ -51,11 +51,18 @@ Add it in your root build.gradle at the end of repositories:
    
            return Todo(text, isChecked)
        }
+   
+       override fun jsonFixture(obj: Todo, resolver: FixtureResolver): Map<String, Any> {
+           return mapOf(
+                   "text" to obj.text,
+                   "isChecked" to obj.isChecked
+           )
+       }
    }
     ```
    In Java:
    ```java
-   public class TodoFixture implements Fixture<Todo> {
+   public class TodoFixture implements JSONFixture<Todo> { // `Fixture` to define only a fixture model. For fixtured JSONObject you must use `JSONFixture`.
    
        // Define here a class Attributes to override fields during generation.
        // If you need to generate fake data you must not use it. 
@@ -71,18 +78,27 @@ Add it in your root build.gradle at the end of repositories:
            }
        }
    
+       @Override
        public Todo fixture(@NotNull Faker faker, @NotNull FixtureAttributes attributes, @NotNull FixtureResolver resolver) {
            String text = attributes.get(Attributes.TEXT, faker.lorem().paragraph());
            boolean isChecked = attributes.get(Attributes.IS_CHECKED, faker.bool().bool());
    
            return new Todo(text, isChecked);
        }
+   
+       @NotNull
+       public Map<String, Object> jsonFixture(Todo obj, @NotNull FixtureResolver resolver) {
+           Map<String, Object> JSON = new HashMap<String, Object>();
+           JSON.put("text", obj.getText());
+           JSON.put("isChecked", obj.isChecked());
+           return JSON;
+       }
    }
    ```
 
 2. Override FixtureFactory and define associations in the constructor. In Kotlin:
     ```kotlin
-    class FixtureFactory : org.andreadelfante.datafixture.resolvers.FixtureFactory() {
+    class ExampleFixtureFactory : org.andreadelfante.datafixture.resolvers.FixtureFactory() {
         init {
             define(clazz = Todo::class, fixture = TodoFixture())
         }
@@ -90,7 +106,7 @@ Add it in your root build.gradle at the end of repositories:
     ```
    In Java.
    ```java
-   public class FixtureFactory extends org.andreadelfante.datafixture.resolvers.FixtureFactory {
+   public class ExampleFixtureFactory extends org.andreadelfante.datafixture.resolvers.FixtureFactory {
        FixtureFactory() {
            super();
    
@@ -101,7 +117,7 @@ Add it in your root build.gradle at the end of repositories:
 
 3. Call the fixture with `factory`. In Kotlin:
     ```kotlin
-    val factory = FixtureFactory() // my FixtureFactory, not the library one
+    val factory = ExampleFixtureFactory() // my FixtureFactory, not the library one
     
     factory[Todo::class].create()
     factory[Todo::class].create(2)
@@ -109,7 +125,7 @@ Add it in your root build.gradle at the end of repositories:
    ```
     In Java:
     ```java
-    FixtureFactory factory = FixtureFactory() // my FixtureFactory, not the library one
+    ExampleFixtureFactory factory = ExampleFixtureFactory()
        
     factory.get(Todo.class).create()
     factory.get(Todo.class).create(2)
