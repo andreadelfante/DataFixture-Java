@@ -16,11 +16,11 @@ class PersonFixture : JSONFixture<Person> {
             dogs = resolver[Dog::class].create(3)
     )
 
-    override fun jsonFixture(obj: Person, resolver: FixtureResolver): Map<String, Any> {
+    override fun jsonFixture(obj: Person, resolver: FixtureResolver): Map<String, Any?> {
         return mapOf(
                 "firstName" to obj.firstName,
                 "lastName" to obj.lastName,
-                "birthday" to obj.birthday?.time as Any,
+                "birthday" to obj.birthday?.time,
                 "dogs" to resolver[Dog::class].createJSON(obj.dogs)
         )
     }

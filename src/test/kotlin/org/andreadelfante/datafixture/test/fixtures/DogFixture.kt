@@ -25,7 +25,7 @@ class DogFixture : JSONFixture<Dog> {
             age = attributes[Attributes.AGE, faker.number().randomDigit()]
     )
 
-    override fun jsonFixture(obj: Dog, resolver: FixtureResolver): Map<String, Any> {
+    override fun jsonFixture(obj: Dog, resolver: FixtureResolver): Map<String, Any?> {
         return mapOf(
                 "name" to obj.name,
                 "age" to obj.age

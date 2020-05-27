@@ -43,7 +43,7 @@ interface FixtureBuilder<T> {
      * @param attributes a dictionary to override fields during generating the objects
      * @return a JSON array
      */
-    fun createJSON(number: Int, attributes: FixtureAttributes): List<Map<String, Any>>
+    fun createJSON(number: Int, attributes: FixtureAttributes): List<Map<String, Any?>>
 
     /**
      * Create a JSON Object from fixture.
@@ -51,7 +51,7 @@ interface FixtureBuilder<T> {
      * @param number the count of the objects to generate.
      * @return a JSON array
      */
-    fun createJSON(number: Int): List<Map<String, Any>> = this.createJSON(number, FixtureAttributes())
+    fun createJSON(number: Int): List<Map<String, Any?>> = this.createJSON(number, FixtureAttributes())
 
     /**
      * Create a JSON Object from fixture.
@@ -59,14 +59,14 @@ interface FixtureBuilder<T> {
      * @param attributes a dictionary to override fields during generating the objects
      * @return a JSON object
      */
-    fun createJSON(attributes: FixtureAttributes): Map<String, Any> = this.createJSON(1, attributes).first()
+    fun createJSON(attributes: FixtureAttributes): Map<String, Any?> = this.createJSON(1, attributes).first()
 
     /**
      * Create a JSON Object from fixture.
      * Please be sure to define `jsonFixtureClosure` or to implement `JSONFixture`, otherwise this function produces an empty JSON Object.
      * @return a JSON object
      */
-    fun createJSON(): Map<String, Any> = this.createJSON(1, FixtureAttributes()).first()
+    fun createJSON(): Map<String, Any?> = this.createJSON(1, FixtureAttributes()).first()
 
     /**
      * Create a JSON Object from fixture.
@@ -74,7 +74,7 @@ interface FixtureBuilder<T> {
      * @param objs a list of objects to transform in JSON array.
      * @return a JSON array
      */
-    fun createJSON(objs: List<T>): List<Map<String, Any>>
+    fun createJSON(objs: List<T>): List<Map<String, Any?>>
 
     /**
      * Create a JSON Object from fixture.
@@ -83,7 +83,7 @@ interface FixtureBuilder<T> {
      * @param attributes a dictionary to override fields during generating the objects
      * @return a JSON object
      */
-    fun createJSON(obj: T): Map<String, Any> = this.createJSON(listOf(obj)).first()
+    fun createJSON(obj: T): Map<String, Any?> = this.createJSON(listOf(obj)).first()
 
     /**
      * Create an array of tuples of object and its JSONObject.

@@ -18,14 +18,14 @@ internal class FixtureFactoryBuilder<T>(private val fixture: Fixture<T>,
         return (1..number).map { fixture.fixture(faker, attributes, resolver) }
     }
 
-    override fun createJSON(number: Int, attributes: FixtureAttributes): List<Map<String, Any>> {
+    override fun createJSON(number: Int, attributes: FixtureAttributes): List<Map<String, Any?>> {
         return (1..number).map {
             val obj = fixture.fixture(faker, attributes, resolver)
             jsonFixture().jsonFixture(obj, resolver)
         }
     }
 
-    override fun createJSON(objs: List<T>): List<Map<String, Any>> {
+    override fun createJSON(objs: List<T>): List<Map<String, Any?>> {
         return objs.map { jsonFixture().jsonFixture(it, resolver) }
     }
 

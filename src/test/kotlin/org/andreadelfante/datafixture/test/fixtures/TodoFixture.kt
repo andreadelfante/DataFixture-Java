@@ -27,7 +27,7 @@ class TodoFixture : JSONFixture<Todo> {
         return Todo(text, isChecked)
     }
 
-    override fun jsonFixture(obj: Todo, resolver: FixtureResolver): Map<String, Any> {
+    override fun jsonFixture(obj: Todo, resolver: FixtureResolver): Map<String, Any?> {
         return mapOf(
                 "text" to obj.text,
                 "isChecked" to obj.isChecked

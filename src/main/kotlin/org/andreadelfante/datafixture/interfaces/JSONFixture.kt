@@ -13,5 +13,5 @@ interface JSONFixture<T> : Fixture<T> {
      *  @param resolver it resolves a specific fixture for nested fixture creations.
      *  @return the JSON object.
      */
-    fun jsonFixture(obj: T, resolver: FixtureResolver): Map<String, Any>
+    fun jsonFixture(obj: T, resolver: FixtureResolver): Map<String, Any?>
 }
