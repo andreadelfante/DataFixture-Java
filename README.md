@@ -27,111 +27,237 @@ Add it in your root build.gradle at the end of repositories:
     ```
 
 ## Usage
-1. Create a class to define a fixture. In Kotlin:
-    ```kotlin
-   class TodoFixture : JSONFixture<Todo> { // `Fixture` to define only a fixture model. For fixtured JSONObject you must use `JSONFixture`.
-   
-       // Define here a class Attributes to override fields during generation.
-       // If you need to generate fake data you must not use it.
-       class Attributes(text: String? = null, isChecked: Boolean? = null) : FixtureAttributes() {
-           companion object {
-               const val TEXT = "TEXT"
-               const val IS_CHECKED = "IS_CHECKED"
-           }
-   
-           init {
-               this[TEXT] = text
-               this[IS_CHECKED] = isChecked
-           }
-       }
-   
-       override fun fixture(faker: Faker, attributes: FixtureAttributes, resolver: FixtureResolver): Todo {
-           val text: String = attributes[Attributes.TEXT, faker.lorem().paragraph()]
-           val isChecked: Boolean = attributes[Attributes.IS_CHECKED, faker.bool().bool()]
-   
-           return Todo(text, isChecked)
-       }
-   
-       override fun jsonFixture(obj: Todo, resolver: FixtureResolver): Map<String, Any> {
-           return mapOf(
-                   "text" to obj.text,
-                   "isChecked" to obj.isChecked
+### Basic
+
+1. Create a new file to define the fixture factory for a model.
+<details>
+    <summary>In Kotlin</summary>
+    
+    data class Company(
+           val name: String,
+           val employees: List<Person>
+    ) {
+       // This is required!
+       companion object
+    }
+    
+    fun Company.Companion.factory() = CompanyFixtureFactory()
+    
+    class CompanyFixtureFactory : FixtureFactory<Company>() {
+    
+       override fun definition(): FixtureDefinition<Company> = define { faker ->
+           Company(
+                   name = faker.company().name(),
+                   employees = Person.factory().make(5)
            )
        }
-   }
-    ```
-   In Java:
-   ```java
-   public class TodoFixture implements JSONFixture<Todo> { // `Fixture` to define only a fixture model. For fixtured JSONObject you must use `JSONFixture`.
-   
-       // Define here a class Attributes to override fields during generation.
-       // If you need to generate fake data you must not use it. 
-       public static class Attributes extends FixtureAttributes {
-           private static final String TEXT = "TEXT";
-           private static final String IS_CHECKED = "IS_CHECKED";
-   
-           public Attributes(String text, boolean isChecked) {
-               super();
-   
-               set(TEXT, text);
-               set(IS_CHECKED, isChecked);
-           }
+    
+       fun empty(name: String): FixtureDefinition<Company> = define { faker ->
+           Company(name = name, employees = listOf())
        }
-   
-       @Override
-       public Todo fixture(@NotNull Faker faker, @NotNull FixtureAttributes attributes, @NotNull FixtureResolver resolver) {
-           String text = attributes.get(Attributes.TEXT, faker.lorem().paragraph());
-           boolean isChecked = attributes.get(Attributes.IS_CHECKED, faker.bool().bool());
-   
-           return new Todo(text, isChecked);
-       }
-   
-       @NotNull
-       public Map<String, Object> jsonFixture(Todo obj, @NotNull FixtureResolver resolver) {
-           Map<String, Object> JSON = new HashMap<String, Object>();
-           JSON.put("text", obj.getText());
-           JSON.put("isChecked", obj.isChecked());
-           return JSON;
-       }
-   }
-   ```
+    }
+</details>
 
-2. Override FixtureFactory and define associations in the constructor. In Kotlin:
-    ```kotlin
-    class ExampleFixtureFactory : org.andreadelfante.datafixture.resolvers.FixtureFactory() {
-        init {
-            define(clazz = Todo::class, fixture = TodoFixture())
+<details>
+    <summary>In Java</summary>
+    
+    public class Company {
+        final String name;
+        final List<Person> employees;
+   
+        public Company(String name, List<Person> employees) {
+           this.name = name;
+           this.employees = employees;
+        }
+        
+        static Factory factory() {
+           return new Factory();
+        }
+        
+        static class Factory extends FixtureFactory<Company> {
+        
+           @NotNull
+           public FixtureDefinition<Company> definition() {
+               return define(Locale.getDefault(), new Function1<Faker, Company>() {
+                   public Company invoke(Faker faker) {
+                       return Company(faker.company().name(), Person.factory().make(5));
+                   }
+               });
+           }
+           
+           public FixtureDefinition<Company> empty(final String name) {
+               return redefine(Locale.getDefault(), new Function1<Company, Company>() {
+                   public Company invoke(Company company) {
+                       return Company(name, new ArrayList<Person>());
+                   }
+               });
+           }
         }
     }
-    ```
-   In Java.
-   ```java
-   public class ExampleFixtureFactory extends org.andreadelfante.datafixture.resolvers.FixtureFactory {
-       FixtureFactory() {
-           super();
-   
-           define(Todo.class, new TodoFixture());
-       }
-   }
-   ```
+</details>
 
-3. Call the fixture with `factory`. In Kotlin:
-    ```kotlin
-    val factory = ExampleFixtureFactory() // my FixtureFactory, not the library one
+2. Then you can build the model by using its factory.
+<details>
+    <summary>In Kotlin</summary>
     
-    factory[Todo::class].create()
-    factory[Todo::class].create(2)
-    factory[Todo::class].create(TodoFixture.Attributes(text = "Fixed text"))
-   ```
-    In Java:
-    ```java
-    ExampleFixtureFactory factory = ExampleFixtureFactory()
-       
-    factory.get(Todo.class).create()
-    factory.get(Todo.class).create(2)
-    factory.get(Todo.class).create(TodoFixture.Attributes("Fixed text")) 
-   ```
+    // Create a single object of type Company.
+    Company.factory().make()
+    // Create a single object of type Company with no employees.
+    Company.factory().empty(name = "EmptyCompany").make()
+    
+    // Create 10 objects of type Company.
+    Company.factory().make(10)
+    // Create 10 objects of type Company with no employees.
+    Company.factory().empty(name = "EmptyCompany").make(10)
+</details>
+
+<details>
+    <summary>In Java</summary>
+    
+    // Create a single object of type Company.
+    Company.factory().make()
+    // Create a single object of type Company with no employees.
+    Company.factory().empty("EmptyCompany").make()
+    
+    // Create 10 objects of type Company.
+    Company.factory().make(10)
+    // Create 10 objects of type Company with no employees.
+    Company.factory().empty("EmptyCompany").make(10)
+</details>
+
+## JSON Fixtures
+A factory can create a JSON Object from a generated model.
+
+1. First, you have to extend `JSONFixtureFactory` object to the model factory.
+<details>
+    <summary>In Kotlin</summary>
+    
+    class CompanyFixtureFactory : JSONFixtureFactory<Company>() {
+    
+        override fun definition(): FixtureDefinition<Company> = define { faker ->
+            Company(
+                    name = faker.company().name(),
+                    employees = Person.factory().make(5)
+            )
+        }
+    
+        // This function define the json definition, using the default definition (function `definition()`).
+        override fun jsonDefinition(): JSONFixtureDefinition<Company> = defineJSON { company ->
+            mapOf(
+                    "name" to company.name,
+                    "employees" to Person.factory().makeJSON(company.employees)
+            )
+        }
+    
+        // If you need to generate the JSON Object of an empty company, change the return type to `JSONFixtureDefinition`
+        // Previously the return was `FixtureDefinition`.
+        fun empty(name: String): JSONFixtureDefinition<Company> = redefineJSON { company ->
+            Company(
+                name = name,
+                employees = listOf()
+            )
+        }
+    }
+</details>
+
+<details>
+    <summary>In Java</summary>
+    
+    static class Factory extends JSONFixtureFactory<Company> {
+            
+    @NotNull
+    public FixtureDefinition<Company> definition() {
+       return define(new Function1<Faker, Company>() {
+           public Company invoke(Faker faker) {
+               return Company(faker.company().name(), Person.factory().make(5));
+           }
+       });
+    }
+    
+    // This function define the json definition, using the default definition (function `definition()`).
+    @NotNull
+    public JSONFixtureDefinition<Company> jsonDefinition() {
+        return defineJSON(definition(), new Function1<Company, Map<String, Object>>() {
+            public Map<String, Object> invoke(Company company) {
+                Map<String, Object> json = new HashMap<String, Object>();
+                json.put("name", company.name);
+                json.put("employees", Person.factory().makeJSON(company.employees));
+                return json;
+            }
+        });
+    }
+    
+    // If you need to generate the JSON Object of an empty company, change the return type to `JSONFixtureDefinition`
+    // Previously the return was `FixtureDefinition`.
+    public JSONFixtureDefinition<Company> empty(final String name) {
+       return redefineJSON(Locale.getDefault(), new Function1<Company, Company>() {
+           public Company invoke(Company company) {
+               return Company(name, new ArrayList<Person>());
+           }
+       });
+    }
+</details>
+
+2. Now you can generate the JSON Object of the model.
+<details>
+    <summary>In Kotlin</summary>
+    
+    // Create a single JSON object of type Company.
+    Company.factory().makeJSON()
+    // Create a single JSON object of type Company with no employees.
+    Company.factory().empty(name = "EmptyCompany").makeJSON()
+    
+    // Create a JSON Array of 10 objects of type Company.
+    Company.factory().makeJSON(10)
+    // Create a JSON Array of 10 objects of type Company with no employees.
+    Company.factory().empty(name = "EmptyCompany").makeJSON(10)
+    
+    // Create a Company object with its relative JSON object.
+    Company.factory().makeWithJSON()
+    // Create 10 Company object with its relative JSON objects.
+    Company.factory().makeWithJSON(10)
+</details>
+
+<details>
+    <summary>In Java</summary>
+    
+    // Create a single JSON object of type Company.
+    Company.factory().makeJSON()
+    // Create a single JSON object of type Company with no employees.
+    Company.factory().empty("EmptyCompany").makeJSON()
+    
+    // Create a JSON Array of 10 objects of type Company.
+    Company.factory().makeJSON(10)
+    // Create a JSON Array of 10 objects of type Company with no employees.
+    Company.factory().empty("EmptyCompany").makeJSON(10)
+    
+    // Create a Company object with its relative JSON object.
+    Company.factory().makeWithJSON()
+    // Create 10 Company object with its relative JSON objects.
+    Company.factory().makeWithJSON(10)
+</details>
+
+3. With `JSONFixtureFactory` you can create a JSON from an external model object.
+<details>
+    <summary>In Kotlin</summary>
+    
+    val company = Company.factory().make()
+    val JSONObject = Company.factory().makeJSON(company)
+    
+    val companies = Company.factory().make(3)
+    val JSONArray = Company.factory().makeJSON(companies)
+</details>
+
+<details>
+    <summary>In Java</summary>
+    
+    Company company = Company.factory().make()
+    Map<String, Object> JSONObject = Company.factory().makeJSON(company)
+    
+    List<Company> companies = Company.factory().make(3)
+    List<Map<String, Object>> JSONArray = Company.factory().makeJSON(companies)
+</details>
 
 ## Contributing
-DataFixture-Java is an open source project, so feel free to contribute.
+**DataFixture-Java** is an open source project, so feel free to contribute.
 You can open an issue for problems or suggestions, and you can propose your own fixes by opening a pull request with the changes.
